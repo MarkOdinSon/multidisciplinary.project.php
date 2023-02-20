@@ -7,13 +7,9 @@ class User {
     public static function validates($data) {
         $errors = array();
 
-        if (empty($data['name'])) {
-            $errors[] = 'Name cannot be empty';
-        }
+        if (empty($data['name'])) { $errors[] = 'Name cannot be empty'; }
 
-        if (empty($data['surname'])) {
-            $errors[] = 'Name cannot be empty';
-        }
+        if (empty($data['surname'])) { $errors[] = 'Name cannot be empty'; }
 
         if (empty($data['email'])) {
             $errors[] = 'Email cannot be empty';
@@ -33,19 +29,56 @@ class User {
             $errors[] = 'Confirm password length must be more then 5';
         }
 
-        if (!($data['confirm_password'] == $data['password'])) {
-            $errors[] = 'Passwords (Confirm password and password) must match';
-        }
+        if (!($data['confirm_password'] == $data['password'])) { $errors[] = 'Passwords (Confirm password and password) must match'; }
 
         return $errors;
     }
 
-    public static function getByEmail($id) {
-        // Get user from database user_id
+    public static function getUserByEmail($email) {
+        // Get user from database email
+
+        include 'config/dbConnect.php'; // here variable $dbConnection
+
+        $sql = "SELECT * FROM users WHERE email = ?";
+
+        $queryPDO = $dbConnection->prepare($sql);
+
+        $queryPDO->execute([$email]);
+
+        $user = $queryPDO->fetch(PDO::FETCH_ASSOC);
+
+        $dbConnection = null;
+
+        if ($user)
+        {
+            return $user;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public static function create($data) {
         // Create new user in database
+
+        include 'config/dbConnect.php'; // here variable $dbConnection
+
+        $sql = "INSERT INTO users (name, surname, email, encrypted_password)
+                VALUES (:name, :surname, :email, :encrypted_password)";
+
+        $queryPDO = $dbConnection->prepare($sql);
+
+        $queryPDO->bindParam(":name", $data['name']);
+        $queryPDO->bindParam(":surname", $data['surname']);
+        $queryPDO->bindParam(":email", $data['email']);
+        $queryPDO->bindParam(":encrypted_password", md5($data['password'].'Kds_25gkks_D'));
+
+        // Execute the statement to insert the new user
+        $queryPDO->execute();
+
+        // Disconnect from the database
+        $dbConnection = null;
     }
 
     public static function edit($data) {
