@@ -5,18 +5,21 @@
 echo 'This is register page';
 ?>
 
-<form action="/doRegister" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
+<form action="/users/doRegister" method="post">
+    <label for="name">Name:</label>
+    <input type="text" name="name" required>
+    <br>
+    <label for="surname">Surname:</label>
+    <input type="text" name="surname" required>
     <br>
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+    <input type="email" name="email" required>
     <br>
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <input type="password" name="password" required>
     <br>
     <label for="confirm_password">Confirm Password:</label>
-    <input type="password" id="confirm_password" name="confirm_password" required>
+    <input type="password" name="confirm_password" required>
     <br>
     <input type="submit" value="Register">
 </form>

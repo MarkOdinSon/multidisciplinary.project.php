@@ -12,11 +12,11 @@ error_reporting(E_ALL);
 // Define routes
 $routes = [
     '/' => ['HomeController', 'index'],
-    '/login' => ['UserController', 'login'],
-    '/register' => ['UserController', 'register'],
-    '/doLogin' => ['UserController', 'doLogin'],
-    '/doLogout' => ['UserController', 'doLogout'],
-    '/doRegister' => ['UserController', 'doRegister']
+    '/users/login' => ['UserController', 'login'],
+    '/users/register' => ['UserController', 'register'],
+    '/users/doLogin' => ['UserController', 'doLogin'],
+    '/users/doLogout' => ['UserController', 'doLogout'],
+    '/users/doRegister' => ['UserController', 'doRegister']
 ];
 
 // Parse current URL

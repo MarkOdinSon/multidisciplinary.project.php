@@ -5,7 +5,7 @@
 echo 'This is login page';
 ?>
 
-<form action="/doLogin" method="post">
+<form action="/users/doLogin" method="post">
   <label for="email">Email:</label>
   <input type="email" id="username" name="username" required>
   <br>
