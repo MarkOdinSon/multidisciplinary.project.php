@@ -6,8 +6,8 @@ require_once('app/controllers/HomeController.php');
 require_once('app/controllers/UserController.php');
 
 // Display folder path errors and other errors
-ini_set("display_errors", "1");
-error_reporting(E_ALL);
+// ini_set("display_errors", "1");
+// error_reporting(E_ALL);
 
 // Define routes
 $routes = [

@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 // app/controllers/UserController.php
 
 require_once('app/models/User.php');
@@ -23,25 +25,35 @@ class UserController {
         if ($user == 0)
         {
             // user not found
-            echo 'User with this email not found!';
-            exit();
+            $_SESSION['login_wrong_email_error'] = 'User with this email not found!';
+
+            header('Location: login'); // app/views/login.php
         }
         else
         {
             // user found
             if (md5($password.'Kds_25gkks_D') == $user['encrypted_password'])
             {
-                // right password
+                // if password is right
                 // here session will be crated
 
-                // setcookie('user_id', $user['user_id'], time() )
+                $_SESSION['user'] = [
+                    'id' => $user['user_id'],
+                    'email' => $user['email'],
+                    'name' => $user['name'],
+                    'surname' => $user['surname']
+                ];
+
+                header('Location: /'); // app/views/home.php
 
                 print_r($user); // authorized successfully
             }
             else
             {
                 // wrong password
-                echo 'Wrong password, try again!';
+
+                $_SESSION['login_wrong_password_error'] = 'Wrong password, try again!';
+                header('Location: login'); // app/views/login.php
             }
         }
 
@@ -49,7 +61,10 @@ class UserController {
     }
 
     public function doLogout() {
-
+        if ($_SESSION['user']) {
+            unset($_SESSION['user']);
+        }
+        header('Location: /'); // app/views/home.php
     }
 
     public function doRegister() {
