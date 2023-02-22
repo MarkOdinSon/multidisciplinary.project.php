@@ -3,7 +3,7 @@
 // router.php
 
 require_once('app/controllers/HomeController.php');
-require_once('app/controllers/UserController.php');
+require_once('app/controllers/UserController.php'); // На сайті завжди буде працювати session_start();
 
 // Display folder path errors and other errors
 // ini_set("display_errors", "1");

@@ -1,8 +1,6 @@
 <?php
 
-session_start();
-
-// app/views/home.php
+// app/views/home/home.php
 
 if (!empty($_SESSION['user']))
 {
@@ -11,6 +9,10 @@ if (!empty($_SESSION['user']))
     print_r($_SESSION['user']);
     echo ' <br>';
     echo '<a href="/users/doLogout">Logout</a>';
+    echo ' <br>';
+
+    echo $_SESSION['notice_already_logined'];
+    unset($_SESSION['notice_already_logined']); // delete error message
     echo ' <br>';
 }
 else

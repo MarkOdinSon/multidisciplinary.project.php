@@ -2,14 +2,47 @@
 
 // app/models/User.php
 
-class User {
+class User
+{
+    public static function getUserByEmail($email)
+    {
+        // Get user from database email
 
-    public static function validates($data) {
+        include 'config/dbConnect.php'; // here variable $dbConnection
+
+        $sql = "SELECT * FROM users WHERE email = ?";
+
+        $queryPDO = $dbConnection->prepare($sql);
+
+        $queryPDO->execute([$email]);
+
+        $user = $queryPDO->fetch(PDO::FETCH_ASSOC);
+
+        $dbConnection = null;
+
+        if ($user) {
+            return $user;
+        } else {
+            return 0;
+        }
+    }
+
+    public static function validates($data)
+    {
         $errors = array();
 
-        if (empty($data['name'])) { $errors[] = 'Name cannot be empty'; }
+        if (empty($data['name'])) {
+            $errors[] = 'Name cannot be empty';
+        }
 
-        if (empty($data['surname'])) { $errors[] = 'Name cannot be empty'; }
+        if (empty($data['surname'])) {
+            $errors[] = 'Name cannot be empty';
+        }
+
+        if (User::getUserByEmail(($data['email'])))
+        {
+            $errors[] = 'Entered email has been already taken!';
+        }
 
         if (empty($data['email'])) {
             $errors[] = 'Email cannot be empty';
@@ -29,37 +62,15 @@ class User {
             $errors[] = 'Confirm password length must be more then 5';
         }
 
-        if (!($data['confirm_password'] == $data['password'])) { $errors[] = 'Passwords (Confirm password and password) must match'; }
+        if (!($data['confirm_password'] == $data['password'])) {
+            $errors[] = 'Confirm password and password must match';
+        }
 
         return $errors;
     }
 
-    public static function getUserByEmail($email) {
-        // Get user from database email
-
-        include 'config/dbConnect.php'; // here variable $dbConnection
-
-        $sql = "SELECT * FROM users WHERE email = ?";
-
-        $queryPDO = $dbConnection->prepare($sql);
-
-        $queryPDO->execute([$email]);
-
-        $user = $queryPDO->fetch(PDO::FETCH_ASSOC);
-
-        $dbConnection = null;
-
-        if ($user)
-        {
-            return $user;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    public static function create($data) {
+    public static function create($data)
+    {
         // Create new user in database
 
         include 'config/dbConnect.php'; // here variable $dbConnection
@@ -72,7 +83,7 @@ class User {
         $queryPDO->bindParam(":name", $data['name']);
         $queryPDO->bindParam(":surname", $data['surname']);
         $queryPDO->bindParam(":email", $data['email']);
-        $queryPDO->bindParam(":encrypted_password", md5($data['password'].'Kds_25gkks_D'));
+        $queryPDO->bindParam(":encrypted_password", md5($data['password'] . 'Kds_25gkks_D'));
 
         // Execute the statement to insert the new user
         $queryPDO->execute();
@@ -81,11 +92,13 @@ class User {
         $dbConnection = null;
     }
 
-    public static function edit($data) {
+    public static function edit($data)
+    {
         // Edit user in database
     }
 
-    public static function delete($id) {
+    public static function delete($id)
+    {
         // Delete user from database
     }
 }
